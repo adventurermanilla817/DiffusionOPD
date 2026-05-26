@@ -2,8 +2,8 @@
 <div align="center">
   <a href='https://arxiv.org/abs/2605.15055'><img src='https://img.shields.io/badge/Paper%20(arXiv)-2605.15055-red?logo=arxiv'></a>  &nbsp;
   <a href='https://quanhaol.github.io/DiffusionOPD-site/'><img src='https://img.shields.io/badge/Website-green?logo=homepage&logoColor=white'></a> &nbsp;
-  <a href='https://huggingface.co/'><img src="https://img.shields.io/badge/Code-9E95B7?logo=github"></a> &nbsp;
-  <a href='https://github.com/ali-vilab/DiffusionOPD'><img src='https://img.shields.io/badge/Model-blue?logo=huggingface&logoColor='></a> &nbsp;
+  <a href='https://github.com/ali-vilab/DiffusionOPD'><img src="https://img.shields.io/badge/Code-9E95B7?logo=github"></a> &nbsp;
+  <a href='https://huggingface.co/'><img src='https://img.shields.io/badge/Model-blue?logo=huggingface&logoColor='></a> &nbsp;
 </div>
 
 ## Overview
